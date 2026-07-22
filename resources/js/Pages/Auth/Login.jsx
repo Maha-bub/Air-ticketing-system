@@ -1,9 +1,3 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
@@ -15,86 +9,100 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('login'), {
             onFinish: () => reset('password'),
         });
     };
 
     return (
-        <GuestLayout>
+        <>
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
+            <div className="container-fluid my-5">
+                <div className="row">
+                    <div className="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto">
+                        <div className="card border-3">
+                            <div className="card-body p-5">
+                                <h4 className="fw-bold">Get Started Now</h4>
+                                <p className="mb-0">Enter your credentials to login your account</p>
+
+                                {status && (
+                                    <div className="alert alert-success mt-3 mb-0">{status}</div>
+                                )}
+
+                                <form className="row g-3 mt-2" onSubmit={submit}>
+                                    <div className="col-12">
+                                        <label htmlFor="email" className="form-label">Email</label>
+                                        <input
+                                            id="email"
+                                            type="email"
+                                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                            placeholder="jhon@example.com"
+                                            value={data.email}
+                                            autoComplete="username"
+                                            autoFocus
+                                            onChange={(e) => setData('email', e.target.value)}
+                                        />
+                                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                                    </div>
+
+                                    <div className="col-12">
+                                        <label htmlFor="password" className="form-label">Password</label>
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                            placeholder="Enter Password"
+                                            value={data.password}
+                                            autoComplete="current-password"
+                                            onChange={(e) => setData('password', e.target.value)}
+                                        />
+                                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <div className="form-check form-switch">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                id="remember"
+                                                checked={data.remember}
+                                                onChange={(e) => setData('remember', e.target.checked)}
+                                            />
+                                            <label className="form-check-label" htmlFor="remember">
+                                                Remember Me
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    {canResetPassword && (
+                                        <div className="col-md-6 text-end">
+                                            <Link href={route('password.request')}>Forgot Password?</Link>
+                                        </div>
+                                    )}
+
+                                    <div className="col-12">
+                                        <div className="d-grid">
+                                            <button type="submit" className="btn btn-primary" disabled={processing}>
+                                                Login
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-12">
+                                        <div className="text-start">
+                                            <p className="mb-0">
+                                                Don't have an account yet?{' '}
+                                                <Link href={route('register')}>Sign up here</Link>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            )}
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) =>
-                                setData('remember', e.target.checked)
-                            }
-                        />
-                        <span className="ms-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+            </div>
+        </>
     );
 }

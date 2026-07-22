@@ -1,42 +1,35 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Agent\DashboardController as AgentDashboardController;
+use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-
 Route::middleware(['auth', 'verified', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return inertia('Admin/Dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // Add Admin\AirportController, Admin\FlightController etc. here in Phase 2/4
+        // Add Admin\AirportController, Admin\FlightController etc. here in Phase 4
     });
 
-// Same pattern for agent
 Route::middleware(['auth', 'verified', 'role:agent'])
     ->prefix('agent')
     ->name('agent.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return inertia('Agent/Dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [AgentDashboardController::class, 'index'])->name('dashboard');
     });
 
-// Customer — any logged-in user without a special role, or role:customer
 Route::middleware(['auth', 'verified', 'role:customer'])
     ->prefix('my')
     ->name('customer.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return inertia('Customer/Dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
     });
-
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -46,6 +39,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
 Route::get('/dashboard', function () {
     $user = auth()->user();
 
@@ -57,7 +51,6 @@ Route::get('/dashboard', function () {
 
     return redirect()->route('customer.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

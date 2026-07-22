@@ -14,11 +14,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles; // HasRoles add koro existing trait gulor shathe
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    public function bookings()
+    {
+        return $this->hasMany(\App\Models\Booking::class);
+    }
+
     protected $fillable = [
         'name',
         'email',
