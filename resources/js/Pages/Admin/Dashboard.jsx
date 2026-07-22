@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import AppLayout from '@/Layouts/AppLayout';
 
 function StatCard({ label, value }) {
     return (
@@ -15,7 +16,7 @@ function StatCard({ label, value }) {
 
 export default function Dashboard({ stats, recentBookings }) {
     return (
-        <>
+        <AppLayout>
             <Head title="Admin Dashboard" />
 
             <div className="container-fluid py-4">
@@ -73,6 +74,6 @@ export default function Dashboard({ stats, recentBookings }) {
                     </div>
                 </div>
             </div>
-        </>
+        </AppLayout>
     );
 }

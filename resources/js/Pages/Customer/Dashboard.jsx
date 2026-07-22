@@ -1,8 +1,9 @@
 import { Head } from '@inertiajs/react';
+import AppLayout from '@/Layouts/AppLayout';
 
 export default function Dashboard({ bookings }) {
     return (
-        <>
+        <AppLayout>
             <Head title="My Dashboard" />
 
             <div className="container-fluid py-4">
@@ -32,6 +33,6 @@ export default function Dashboard({ bookings }) {
                     )}
                 </div>
             </div>
-        </>
+        </AppLayout>
     );
 }
