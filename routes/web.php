@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AirlineController;
+use App\Http\Controllers\Admin\AirportController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\FlightScheduleController;
+use App\Http\Controllers\Admin\RouteController;
 use App\Http\Controllers\Agent\DashboardController as AgentDashboardController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\ProfileController;
@@ -14,7 +18,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // Add Admin\AirportController, Admin\FlightController etc. here in Phase 4
+        Route::resource('airports', AirportController::class)->except('show');
+        Route::resource('airlines', AirlineController::class)->except('show');
+        Route::resource('routes', RouteController::class)->except('show');
+        Route::resource('flight-schedules', FlightScheduleController::class)->except('show');
     });
 
 Route::middleware(['auth', 'verified', 'role:agent'])
